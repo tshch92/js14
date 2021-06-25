@@ -1,26 +1,23 @@
 function mirror(x) {
-    x = String(x);
-    if ( x.length === 1 || x.length === 0) {
+    const xString = String(x);
+    if (xString.length === 1 || xString.length === 0) {
         return x;
-    };
-    return x[x.length - 1] + mirror(x.substr(0, x.length-1));
+    }
+    return xString[xString.length - 1] + mirror(xString.substr(0, xString.length - 1));
 }
 
-function palindrome(value, i) {
-    if (i === undefined) {
-        i=0
-    };
-    if (value == mirror(value)) {
+function palindrome(value, i = 0) {
+    if (value === +mirror(value)) {
         return {
             result: value,
             steps: i,
-        }
+        };
     }
-    return palindrome(value + +mirror(value), i+1);
+    return palindrome(value + +mirror(value), i + 1);
 }
 
 try {
-    console.log(palindrome(89))
+    console.log(palindrome(89));
 } catch {
-    console.log('can not find a palindrome? Stack overflow? IDK')
+    console.log('can not find a palindrome? Stack overflow? IDK');
 }
