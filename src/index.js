@@ -7,17 +7,18 @@ function mirror(x) {
 }
 
 function palindrome(value, i = 0) {
-    if (value === +mirror(value)) {
-        return {
-            result: value,
-            steps: i,
-        };
+    try {
+        if (value === +mirror(value)) {
+            return {
+                result: value,
+                steps: i,
+            };
+        }
+        return palindrome(value + +mirror(value), i + 1);
+    } catch (error) {
+        alert('no palindrome found');
     }
-    return palindrome(value + +mirror(value), i + 1);
 }
 
-try {
-    console.log(palindrome(89));
-} catch {
-    console.log('can not find a palindrome? Stack overflow? IDK');
-}
+const example = prompt('Enter a number:');
+alert(palindrome(example));
