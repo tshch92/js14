@@ -19,6 +19,3 @@ function palindrome(value, i = 0) {
         alert('no palindrome found');
     }
 }
-
-const example = prompt('Enter a number:');
-alert(palindrome(example));
