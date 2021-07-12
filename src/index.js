@@ -1,174 +1,115 @@
-const maxArrLength = 10;
-const maxMark = 10;
-const minMark = 0;
-const goodAverageMark = 9;
+'use strict';
 
-function Student(firstName, lastName, bday) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.bday = bday;
-    this.scores = new Array(maxArrLength);
-    this.presence = new Array(maxArrLength);
+const btnsNum = 5;
+
+const tableWidth = 3;
+const tableHeight = 3;
+const maxTableValue = 100;
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }
 
-Student.prototype.getAge = function () {
-    return new Date().getFullYear() - this.bday;
-};
+//creating a container with colored squares
+const $btnsCargo = document.createElement('div');
+$btnsCargo.className = 'btn-cargo';
 
-//єто метод, которій вставляет значение в массив если там есть свободній слот
+for (let i = 1; i <= btnsNum; i++) {
+    const $btn = document.createElement('button');
+    $btn.className = 'btn-0 btn';
+    $btn.textContent = i;
+    $btnsCargo.append($btn);
+}
 
-Student.prototype.insert = function (arr, score) {
-    for (let i = 0; i < maxArrLength; i++) {
-        if (typeof arr[i] === 'undefined' && i < maxArrLength - 1) {
-            // с 0 по предпоследний єлементі мі записіваем значение и запрещаем его изменять. Никаких пересдач)))
-            arr[i] = score;
+$btnsCargo.addEventListener('click', e => {
+    if (e.target.tagName === 'BUTTON') {
+        switch (true) {
+        case e.target.classList.contains('btn-0'):
+            e.target.classList.remove('btn-0');
+            e.target.classList.add('btn-1');
+            break;
 
-            Object.defineProperty(arr, arr[i], {
-                writable: false,
-                enumerable: true,
-                configurable: false,
-            });
-            return true;
+        case e.target.classList.contains('btn-1'):
+            e.target.classList.remove('btn-1');
+            e.target.classList.add('btn-2');
+            break;
+
+        case e.target.classList.contains('btn-2'):
+            e.target.classList.remove('btn-2');
+            e.target.classList.add('btn-3');
+            break;
+
+        case e.target.classList.contains('btn-3'):
+            e.target.classList.remove('btn-3');
+            e.target.classList.add('btn-1');
+            break;
         }
 
-        if (typeof arr[i] === 'undefined') {
-            //на последнем элементе мы записываем значение, запрещаем его изменять и замораживаем весь массив
-            //если до єтого шага кто-то нагло присвоит значение какомуто arr[20] - то все пойдет по...
+        const $tmp = e.target;
 
-            arr[i] = score;
-
-            Object.defineProperty(arr, arr[i], {
-                writable: false,
-                enumerable: true,
-                configurable: false,
-            });
-            Object.freeze(arr);
-            return true;
-        }
+        e.currentTarget.append($tmp);
     }
-    return false;
-};
-
-Student.prototype.mark = function (score) {
-    if (score < minMark || score > maxMark) {
-        alert(`Invalid mark. Please put values from ${minMark} to ${maxMark}`);
-    }
-    if (Student.prototype.insert(this.scores, score)) {
-        return this.scores;
-    }
-    alert('No more empty slots for marks');
-    return this.scores;
-};
-
-Student.prototype.present = function () {
-    if (Student.prototype.insert(this.presence, true)) {
-        return this.presence;
-    }
-    alert('No more lessons to attend');
-    return this.presence;
-};
-
-Student.prototype.absent = function () {
-    if (Student.prototype.insert(this.presence, false)) {
-        return this.presence;
-    }
-    alert('No more lessons to attend');
-    return this.presence;
-};
-
-Student.prototype.averageMark = function () {
-    const scoreSum = this.scores.reduce((acc, score) => {
-        if (score) {
-            return acc + score;
-        }
-    });
-
-    // дальше можно біло посчитать редюсом, но он не хотел работать
-
-    let scoreNum = 0;
-
-    this.scores.forEach(element => {
-        if (typeof element !== 'undefined') {
-            scoreNum++;
-        }
-    });
-
-    return scoreSum / scoreNum;
-};
-
-Student.prototype.summary = function () {
-    const avScore = this.averageMark();
-    const totalPresence = this.presence.every(element => element === true || typeof element === 'undefined');
-    switch (true) {
-    case avScore > goodAverageMark && totalPresence:
-        return 'Ути какой молодчинка!';
-    case avScore > goodAverageMark || totalPresence:
-        return 'Норм, но можно лучше';
-
-    default:
-        return 'Редиска!';
-    }
-};
-
-//  пусть будет
-
-Object.defineProperties(Student.prototype, {
-    getAge: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
-    mark: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
-    insert: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
-    present: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
-    absent: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
-    summary: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
-    averageMark: {
-        writable: false,
-        enumerable: false,
-        configurable: false,
-    },
 });
 
-//дальше идут примеры
+//creating a table
 
-// const mary = new Student('Mary', 'Brown', 1998);
+const $myBody = document.querySelector('body');
 
-// for (let i = 0; i < maxArrLength; i++) {
-//     mary.mark(i);
-// }
+const $tblOutput = document.createElement('div');
+$tblOutput.className = 'output';
 
-// //mary.mark(10);
-// //mary.mark(9);
+const $tbl = document.createElement('table');
 
-// mary.present();
-// mary.present();
-// mary.absent();
+const $tblBody = document.createElement('tbody');
 
-// console.log(mary);
+for (let i = 0; i < tableHeight; i++) {
+    const $tblRow = document.createElement('tr');
 
-// console.log(mary.averageMark());
+    for (let j = 0; j < tableWidth; j++) {
+        const $tblCell = document.createElement('td');
+        $tblCell.textContent = getRandomInt(maxTableValue);
+        //рандомно красим ячейки по HSL варьируя Saturation
+        $tblCell.style = `background-color: hsl(200, ${$tblCell.textContent}%, 50%)`;
+        $tblRow.append($tblCell);
+    }
 
-// console.log(mary.summary());
+    $tblBody.append($tblRow);
+}
 
-// console.log(mary.getAge());
+$tbl.append($tblBody);
+
+$tbl.addEventListener('click', e => {
+    if (e.target.tagName === 'TD') {
+        //console.log(e.target);
+        $tblOutput.textContent = e.target.textContent;
+    }
+});
+
+//toggle class
+
+const $togglePlayground = document.createElement('div');
+$togglePlayground.textContent = 'togglePlayground';
+$togglePlayground.className = 'box shadow border';
+$togglePlayground.style = 'margin-top: 100px; padding: 16px; box-sizing: border-box;';
+
+function toggleClass(element, cls) {
+    let newClass = element.className;
+
+    if (newClass.includes(cls)) {
+        newClass = newClass.replace(cls, '');
+        element.className = newClass;
+        return element.className;
+    }
+
+    newClass = newClass.concat(' ', cls);
+    element.className = newClass;
+    return element.className;
+}
+
+$myBody.append($btnsCargo);
+$myBody.append($tbl);
+$myBody.append($tblOutput);
+$myBody.append($togglePlayground);
+
+toggleClass($togglePlayground, 'box');
+//toggleClass($togglePlayground, 'radius');
